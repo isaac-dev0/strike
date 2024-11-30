@@ -6,7 +6,13 @@ export async function middleware(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  const publicPaths = ["/login", "/forgot-password"];
+  const publicPaths = [
+    "/login", 
+    "/forgot-password", 
+    "/email-redirect", 
+    "/reset-password"
+  ];
+  
   const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
 
   if (!user && !isPublicPath) {

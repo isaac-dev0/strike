@@ -22,11 +22,9 @@ export async function loginUserAction(
   return redirect("/protected");
 };
 
-export const forgotPasswordAction = async (formData: FormData) => {
-  const email = formData.get("email")?.toString();
+export const forgotPasswordAction = async (email: string, callbackUrl?: string) => {
   const supabase = await createClient();
   const origin = (await headers()).get("origin");
-  const callbackUrl = formData.get("callbackUrl")?.toString();
 
   if (!email) {
     return encodedRedirect("error", "/forgot-password", "Field must be a valid email address.");
@@ -51,7 +49,41 @@ export const forgotPasswordAction = async (formData: FormData) => {
 
   return encodedRedirect(
     "success",
-    "/forgot-password",
-    "Check your email for a link to reset your password.",
-  );
+    "/email-redirect",
+    "Check your email for a link to reset your password."
+  )
+};
+
+export const resetPasswordAction = async (password: string, confirmPassword: string) => {
+  const supabase = await createClient();
+
+  if (!password || !confirmPassword) {
+    return encodedRedirect(
+      "error",
+      "/protected/reset-password",
+      "Password and confirm password are required",
+    );
+  }
+
+  if (password !== confirmPassword) {
+    return encodedRedirect(
+      "error",
+      "/protected/reset-password",
+      "Passwords do not match",
+    );
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: password,
+  });
+
+  if (error) {
+    return encodedRedirect(
+      "error",
+      "/protected/reset-password",
+      "Password update failed",
+    );
+  }
+
+  return encodedRedirect("success", "/login", "Password updated successfully");
 };
