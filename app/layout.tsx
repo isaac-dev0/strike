@@ -4,8 +4,9 @@ import "./globals.css";
 
 import AppHeader from "@/components/global/AppHeader";
 import AppFooter from "@/components/global/AppFooter";
+
 import { UserProvider } from "@/hooks/UserProvider";
-import { getUser } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -17,7 +18,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getUser();
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
   return (
     <html lang="en" className={publicSans.className} suppressHydrationWarning>
