@@ -6,7 +6,15 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { verifyOtp } from "@/app/auth/actions"
 import { z } from "zod"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { 
+  Form, 
+  FormControl, 
+  FormDescription, 
+  FormField, 
+  FormItem, 
+  FormLabel, 
+  FormMessage 
+} from "@/components/ui/form"
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { Button } from "@/components/ui/button"
@@ -34,7 +42,7 @@ export default function OTPForm(props: { email: string }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
-        className="space-y-6"
+        className="grid gap-4"
       >
         <FormField
           control={form.control}
@@ -44,7 +52,7 @@ export default function OTPForm(props: { email: string }) {
               <FormLabel>One-time Password</FormLabel>
               <FormControl>
                 <InputOTP 
-                  maxLength={6} 
+                  maxLength={6}
                   pattern={REGEXP_ONLY_DIGITS} 
                   {...field}
                 >
@@ -58,9 +66,6 @@ export default function OTPForm(props: { email: string }) {
                   </InputOTPGroup>
                 </InputOTP>
               </FormControl>
-              <FormDescription>
-                Please enter the one-time password sent to your email.
-              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
