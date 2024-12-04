@@ -1,3 +1,5 @@
-export default async function Index() {
-  return <h1>Index</h1>
+import { redirect } from "next/navigation";
+
+function Index() {
+  redirect("/dashboard")
 }
