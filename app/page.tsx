@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
-function Index() {
+export default function Index() {
   redirect("/dashboard")
 }
