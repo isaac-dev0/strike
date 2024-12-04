@@ -29,7 +29,7 @@ export async function verifyOtp(
   });
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/dashboard')
 }
 
 // export async function signup(formData: FormData) {
