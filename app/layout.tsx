@@ -2,6 +2,9 @@ import { Public_Sans } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 
+import AppHeader from "@/components/global/AppHeader";
+import AppFooter from "@/components/global/AppFooter";
+
 import { UserProvider } from "@/hooks/UserProvider";
 import { createClient } from "@/utils/supabase/server";
 
@@ -29,7 +32,9 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <UserProvider value={user}>
+            <AppHeader />
             {children}
+            <AppFooter />
           </UserProvider>
         </ThemeProvider>
       </body>
