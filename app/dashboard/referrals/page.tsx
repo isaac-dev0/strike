@@ -1,6 +1,5 @@
 import DataTable from "@/components/DataTable";
 import { columns } from "@/components/referrals/table/ReferralTableColumns";
-import ReferralTableHeader from "@/components/referrals/table/ReferralTableHeader";
 import { ReferralStatus } from "@/enums/ReferralStatus";
 import { Referral } from "@/types/Referral";
 
@@ -61,8 +60,17 @@ export default async function Referrals() {
   return (
     <>
       <h2>Referrals</h2>
+      <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+        <div className="aspect-video rounded-xl bg-muted/50" />
+        <div className="aspect-video rounded-xl bg-muted/50" />
+        <div className="aspect-video rounded-xl bg-muted/50" />
+      </div>
       <div className="min-h-[100vh] flex-1 rounded-xl md:min-h-min">
-        <DataTable columns={columns} data={referrals} />
+        <DataTable 
+          columns={columns} 
+          data={referrals}
+          searchParams="familyName" 
+        />
       </div>
     </>
   )

@@ -7,6 +7,7 @@ import { ReferralStatusBadge } from "@/components/referrals/ReferralStatusBadge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
+import { redirect } from "next/navigation"
 
 export const columns: ColumnDef<Referral>[] = [
   {
@@ -71,7 +72,11 @@ export const columns: ColumnDef<Referral>[] = [
               Copy ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View</DropdownMenuItem>
+            <DropdownMenuItem 
+              onClick={() => redirect(`/dashboard/referrals/${row.getValue("id")}`)}
+            >
+              View
+            </DropdownMenuItem>
             <DropdownMenuItem>Download</DropdownMenuItem>
             <DropdownMenuItem>Archive</DropdownMenuItem>
           </DropdownMenuContent>

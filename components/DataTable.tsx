@@ -2,26 +2,26 @@
 
 import { ColumnDef, ColumnFiltersState, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, VisibilityState } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight, Settings2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import React from "react"
-import { Select, SelectContent, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "./ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  searchParams: string
 }
 
 export default function DataTable<TData, TValue>({
   columns,
   data,
+  searchParams
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
-  )
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
   const [rowSelection, setRowSelection] = React.useState({})
@@ -49,10 +49,10 @@ export default function DataTable<TData, TValue>({
     <div className="w-full">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Search by family name..."
-          value={(table.getColumn("familyName")?.getFilterValue() as string) ?? ""}
+          placeholder="Search"
+          value={(table.getColumn(searchParams)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("familyName")?.setFilterValue(event.target.value)
+            table.getColumn(searchParams)?.setFilterValue(event.target.value)
           }
         />
         <div className="w-1/4 mx-2">

@@ -1,13 +1,7 @@
-import { Button } from "@/components/ui/button";
-
 export default function ReferralTableHeader() {
   return (
     <div>
-      <div className="flex flex-row justify-between items-center">
-        <Button>
-          Create New
-        </Button>
-      </div>
+      <h2>Header Component</h2>
     </div>
   )
 }
