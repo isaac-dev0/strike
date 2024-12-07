@@ -1,5 +1,5 @@
 import { ReferralStatus } from "@/enums/ReferralStatus";
-import { Badge } from "../ui/badge";
+import { Badge } from "@/components/ui/badge";
 
 interface StatusBadgeProps {
   status: ReferralStatus;
@@ -12,7 +12,8 @@ const statusColours = {
   [ReferralStatus.IN_PROGRESS]: "bg-status-in-progress text-status-in-progress-foreground",
   [ReferralStatus.READY]: "bg-status-ready text-status-ready-foreground",
   [ReferralStatus.PENDING]: "bg-status-pending text-status-pending-foreground",
-  [ReferralStatus.COLLECTED]: "bg-status-collected text-status-collected-foreground"
+  [ReferralStatus.COLLECTED]: "bg-status-collected text-status-collected-foreground",
+  [ReferralStatus.CANCELLED]: "bg-status-declined text-status-declined-foreground",
 };
 
 export const mapStatusToEnum = (status: string): ReferralStatus => {
@@ -31,6 +32,8 @@ export const mapStatusToEnum = (status: string): ReferralStatus => {
       return ReferralStatus.PENDING;
     case "collected":
       return ReferralStatus.COLLECTED;
+    case "cancelled":
+      return ReferralStatus.CANCELLED;
     default:
       throw new Error(`Unknown status: ${status}`);
   }

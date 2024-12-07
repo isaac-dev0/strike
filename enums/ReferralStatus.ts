@@ -6,4 +6,5 @@ export enum ReferralStatus {
   READY = "Ready",
   PENDING = "Pending",
   COLLECTED = "Collected",
+  CANCELLED = "Cancelled",
 }
