@@ -3,7 +3,7 @@
 import { Referral } from "@/types/Referral"
 import { ColumnDef } from "@tanstack/react-table"
 import { Checkbox } from "@/components/ui/checkbox"
-import { ReferralStatusBadge } from "@/components/referrals/ReferralStatusBadge"
+import { mapStatusToEnum, ReferralStatusBadge } from "@/components/referrals/ReferralStatusBadge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { MoreHorizontal } from "lucide-react"
@@ -33,22 +33,26 @@ export const columns: ColumnDef<Referral>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "id",
-    header: "ID",
+    accessorKey: "referral_id",
+    header: "Referral ID",
   },
   {
-    accessorKey: "familyName",
-    header: "Family Name"
+    accessorKey: "guardianSurnames",
+    header: "Family Name(s)",
   },
   {
-    accessorKey: "referee",
-    header: "Referee",
+    accessorKey: "created_at",
+    header: "Created",
+    cell: ({ row }) => {
+      const formattedDate = new Date(row.getValue("created_at") as string)
+      return <span>{formattedDate.toLocaleString('en-GB', { timeZone: 'UTC' })}</span>
+    },
   },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-      <ReferralStatusBadge status={row.getValue("status")} />
+      <ReferralStatusBadge status={mapStatusToEnum(row.getValue("status"))} />
     ),
   },
   {
@@ -67,13 +71,13 @@ export const columns: ColumnDef<Referral>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(referral.id)}
+              onClick={() => navigator.clipboard.writeText(referral.referral_id)}
             >
               Copy ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem 
-              onClick={() => redirect(`/dashboard/referrals/${row.getValue("id")}`)}
+              onClick={() => redirect(`/dashboard/referrals/${row.getValue("referral_id")}`)}
             >
               View
             </DropdownMenuItem>
