@@ -96,7 +96,7 @@ export default function DataTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {column.columnDef.header?.toString()}
                   </DropdownMenuCheckboxItem>
                 )
               })}

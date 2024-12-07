@@ -1,61 +1,41 @@
 import DataTable from "@/components/DataTable";
 import { columns } from "@/components/referrals/table/ReferralTableColumns";
-import { ReferralStatus } from "@/enums/ReferralStatus";
 import { Referral } from "@/types/Referral";
+import { createClient } from "@/utils/supabase/server";
 
-// async function getData(): Promise<Referral[]> {
-//   return [
-//     // Fetch API data here.
-//   ]
-// }
+async function getData(): Promise<Referral[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from('referrals')
+    .select(`
+      *,
+      guardians (
+        id,
+        surname
+      ),
+      referees (
+        id,
+        email
+      )
+    `);
 
-export const referrals: Referral[] = [
-  {
-    id: "GB-00166",
-    referee: "John Smith",
-    familyName: "Johnson",
-    status: ReferralStatus.ACCEPTED
-  },
-  {
-    id: "GB-21235",
-    referee: "Bob Jones",
-    familyName: "Smith",
-    status: ReferralStatus.DECLINED
-  },
-  {
-    id: "GB-12311",
-    referee: "Daisy Anderson",
-    familyName: "Villa",
-    status: ReferralStatus.RECEIVED
-  },
-  {
-    id: "GB-56533",
-    referee: "Valerie Bowlhead",
-    familyName: "Gray",
-    status: ReferralStatus.PENDING
-  },
-  {
-    id: "GB-89753",
-    referee: "Vernon Grist",
-    familyName: "Falla",
-    status: ReferralStatus.IN_PROGRESS
-  },
-  {
-    id: "GB-22344",
-    referee: "Nina Neutron",
-    familyName: "Achme",
-    status: ReferralStatus.READY
-  },
-  {
-    id: "GB-45555",
-    referee: "Graham Vins",
-    familyName: "De Luca",
-    status: ReferralStatus.COLLECTED
-  },
-]
+  if (error) {
+    console.error('Error fetching data:', error);
+    return [];
+  }
+
+  const processedData = (data ?? []).map((referral) => ({
+    ...referral,
+    guardianSurnames: referral.guardians
+      ?.map((guardian: { first_name: string, surname: string }) => guardian.surname)
+      .join(", ") || "",
+  }));
+
+  return processedData as Referral[];
+}
 
 export default async function Referrals() {
-  // const data = await getData()
+  const referrals: Referral[] = await getData();
 
   return (
     <>
@@ -69,7 +49,7 @@ export default async function Referrals() {
         <DataTable 
           columns={columns} 
           data={referrals}
-          searchParams="familyName" 
+          searchParams="guardianSurnames"
         />
       </div>
     </>
