@@ -7,6 +7,7 @@ export interface Referral {
   reason?: string;
   is_repeat_family: boolean;
   post_code?: string;
+  priority?: string;
   notes?: string;
   created_at: string;
   updated_at: string;
